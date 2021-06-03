@@ -32,7 +32,9 @@ export default {
   },
   methods: {
     itemClick() {
-      this.$router.push(this.path)
+      if (this.$route.path.indexOf(this.path) === -1) {
+        this.$router.push(this.path)
+      }
     }
   }
 }

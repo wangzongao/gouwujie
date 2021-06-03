@@ -2,7 +2,7 @@
 node_modules
 /dist
 
-
+开发思路.md
 # local env files
 .env.local
 .env.*.local
