@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item" @click="itemClick">
-    <img :src="goodsItem.show.img" @load="imageLoad">
+    <img :src="showImage" @load="imageLoad">
     <div class="goods-info">
       <p>{{ goodsItem.title }}</p>
       <span class="price">{{ goodsItem.price }}</span>
@@ -20,16 +20,20 @@ export default {
       }
     }
   },
+  computed: {
+    showImage() {
+      return this.goodsItem.image || this.goodsItem.img || this.goodsItem.show.img
+    }
+  },
   methods: {
     imageLoad() {
-      this.$bus.$emit('goodsItemHomeImageLoad')
-      // if (this.$route.path.indexOf('/home') !== -1) {
-      //   this.$bus.$emit('itemHomeImageLoad')
-      // } else if (this.$route.path.indexOf('/detail') !== -1) {
-      //   this.$bus.$emit('itemDetailImageLoad')
-      // } else if (this.$route.path.indexOf('/category') !== -1) {
-      //   this.$bus.$emit('itemCategoryImageLoad')
-      // }
+      if (this.$route.path.indexOf('/home') !== -1) {
+        this.$bus.$emit('itemHomeImageLoad')
+      } else if (this.$route.path.indexOf('/detail') !== -1) {
+        this.$bus.$emit('itemDetailImageLoad')
+      } else if (this.$route.path.indexOf('/category') !== -1) {
+        this.$bus.$emit('itemCategoryImageLoad')
+      }
     },
     itemClick() {
       this.$router.push({

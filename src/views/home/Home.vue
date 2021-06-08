@@ -1,8 +1,8 @@
 <template>
   <div id="home">
-    <navbar class="home-navbar">
+    <Navbar class="home-navbar">
       <div slot="center">购物街</div>
-    </navbar>
+    </Navbar>
     <TabControl class="tab-control" :titles="['流行','新款','精选']" @titleClick="titleClick" ref="tab-control1"
                 v-show="isTabControlFixed"/>
     <Scroll class="wrapper" :probeType="3" :pullupLoad="true"
@@ -13,7 +13,7 @@
       <TabControl :titles="['流行','新款','精选']" @titleClick="titleClick" ref="tab-control2"/>
       <GoodsList :goods="showGoods"/>
     </Scroll>
-    <BackTop @click.native="backTopClick" v-show="isBackTopShow"/>
+    <BackTop @click.native="backTopClick('scroller')" v-show="isBackTopShow"/>
   </div>
 </template>
 
@@ -22,7 +22,6 @@ import Navbar from "components/common/navbar/Navbar";
 import Scroll from "components/common/scroll/Scroll";
 import TabControl from "components/content/tabControl/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
-import BackTop from "components/content/backTop/BackTop";
 
 import HomeSwiper from "./childComponents/HomeSwiper";
 import HomeRecommendView from "./childComponents/HomeRecommendView";
@@ -30,6 +29,7 @@ import HomeFeatureView from "./childComponents/HomeFeatureView";
 
 import {getHomeMultidata, getHomeGoods} from "network/home";
 import debounce from "common/debounce";
+import {backTopMixin} from "common/mixin";
 export default {
   name: "Home",
   data() {
@@ -42,11 +42,11 @@ export default {
         'sell': {page: 0, list: []}
       },
       currentType: 'pop',
-      isBackTopShow: false,
       tabOffsetTop: 0,
       isTabControlFixed: false
     }
   },
+  mixins:[backTopMixin],
   components: {
     Navbar,
     HomeSwiper,
@@ -54,8 +54,7 @@ export default {
     HomeFeatureView,
     TabControl,
     GoodsList,
-    Scroll,
-    BackTop
+    Scroll
   },
   computed: {
     showGoods() {
@@ -72,10 +71,6 @@ export default {
     },
     featureImageLoad() {
       this.tabOffsetTop = this.$refs["tab-control2"].$el.offsetTop
-    },
-    //backTop回到顶部
-    backTopClick() {
-      this.$refs.scroller.scrollTo(0, 0)
     },
     //Scroll组件的方法
     contentScroll(pos) {
@@ -133,7 +128,7 @@ export default {
   mounted() {
     // 监听图片的加载后，刷新scroll
     const refresh = debounce(this.$refs.scroller.refresh, 200)
-    this.$bus.$on('goodsItemHomeImageLoad', () => {
+    this.$bus.$on('itemHomeImageLoad', () => {
       refresh()
     })
   }

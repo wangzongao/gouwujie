@@ -19,6 +19,12 @@ export default {
     pullUpLoad: {
       type: Boolean,
       default: true
+    },
+    data: {
+      type: Array,
+      default() {
+        return []
+      }
     }
   },
   data() {
@@ -54,6 +60,11 @@ export default {
       this.scroller.on('pullingUp', () => {
         this.$emit('pullingUp')
       })
+    }
+  },
+  watch: {
+    data() {
+      setTimeout(this.refresh, 20)
     }
   }
 }

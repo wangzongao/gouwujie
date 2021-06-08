@@ -88,6 +88,7 @@ export default {
 
 .info-detail {
   padding: 0 5px 15px;
+  margin-bottom: 20px;
 }
 
 .info-detail p {
