@@ -8,7 +8,7 @@
       <div class="tab-content">
         <Scroll class="wrapper" :data="[categoryData]" ref="scroller">
           <TabContentCategory :subcategories="showSubcategory"/>
-          <TabControl :titles="['综合', '新品', '销量']" @itemClick="tabClick(currentIndex)"/>
+          <TabControl :titles="['综合', '新品', '销量']" @titleClick="tabClick(currentIndex)"/>
           <GoodsList :goods="showCategoryDetail"/>
         </Scroll>
       </div>
@@ -29,7 +29,7 @@ import GoodsList from 'components/content/goods/GoodsList'
 
 import {getCategory, getSubcategory, getCategoryDetail} from "network/category";
 import {POP, SELL, NEW} from "common/const";
-import {tabControlMixin} from "@/common/mixin";
+import {tabControlMixin} from "common/mixin";
 
 
 export default {
@@ -107,7 +107,6 @@ export default {
       getCategoryDetail(miniWallkey, type).then(res => {
         // 3.将获取的数据保存下来
         this.categoryData[this.currentIndex].categoryDetail[type] = res.data
-        this.categoryData = {...this.categoryData}
       })
     },
     selectItem(index) {
